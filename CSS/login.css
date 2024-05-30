@@ -1,0 +1,127 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
+    animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+#login-intro-form, #login-intro {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
+}
+
+.login-login-title {
+    color: #2ecc71;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.login-account-wall {
+    padding: 20px;
+}
+
+.login-form-signin input[type="email"], .login-form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 100%;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+.btn-primary {
+    background-color: #2ecc71;
+    border: none;
+    margin-bottom: 10px;
+    animation: buttonClick 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background-color: #27ae60;
+}
+
+.checkbox {
+    margin-bottom: 10px;
+}
+
+.login-need-help {
+    color: #999;
+}
+
+.login-new-account {
+    color: #2ecc71;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+        background-color: #2ecc71;
+    }
+    50% {
+        transform: scale(0.95);
+        background-color: #27ae60;
+    }
+    100% {
+        transform: scale(1);
+        background-color: #2ecc71;
+    }
+}
+
+.btn-primary:active {
+    animation: buttonClick 0.3s ease-in-out;
+}
