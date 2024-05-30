@@ -1,0 +1,223 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.login-container {
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 400px;
+    width: 100%;
+    position: relative;
+    animation: popUp 0.7s ease-in-out;
+}
+
+#hri {
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #2ecc71;
+    animation: fadeIn 1s ease-in-out;
+}
+
+input[type="text"], input[type="password"], input[type="email"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+    animation: slideIn 0.5s ease-in-out;
+}
+
+button {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #2ecc71;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #27ae60;
+    transform: translateY(-3px);
+}
+
+button.secondary-btn {
+    background-color: #ddd;
+    color: #333;
+}
+
+button.secondary-btn:hover {
+    background-color: #ccc;
+    transform: translateY(-3px);
+}
+
+p {
+    margin: 20px 0;
+    position: relative;
+    color: #999;
+    animation: fadeIn 1s ease-in-out;
+}
+
+p span {
+    background-color: #fff;
+    padding: 0 10px;
+}
+
+p:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 35%;
+    height: 1px;
+    background-color: #ddd;
+}
+
+p:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    width: 35%;
+    height: 1px;
+    background-color: #ddd;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes popUp {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes buttonClick {
+    0% {
+        transform: scale(1);
+        background-color: #2ecc71;
+    }
+    50% {
+        transform: scale(0.95);
+        background-color: #27ae60;
+    }
+    100% {
+        transform: scale(1);
+        background-color: #2ecc71;
+    }
+}
+
+button:active {
+    animation: buttonClick 0.3s ease-in-out;
+}
+
+/* Unique Symbol */
+.unique-symbol {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    background: url('unique-symbol.svg') no-repeat center center;
+    background-size: contain;
+}
+
+/* Adding a tourist place background image with animation */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(270deg, #2ecc71, #27ae60, #16a085);
+    background-size: 600% 600%;
+    opacity: 0.1;
+    z-index: -1;
+    animation: gradientAnimation 10s ease infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Page transition animation */
+@keyframes pageTransition {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes pageLoad {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.page-transition {
+    animation: pageTransition 0.5s forwards;
+}
+
+.page-load {
+    animation: pageLoad 0.5s forwards;
+}

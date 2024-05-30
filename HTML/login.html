@@ -1,0 +1,228 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/nav1.css">
+    <link rel="stylesheet" href="../CSS/login.css">
+    <link rel="stylesheet" href="../CSS/footer.css">
+    <title>Login | TravelYaari</title>
+</head>
+
+<body>
+    <div id="navigation"></div>
+    <script>
+        $(document).ready(function() {
+            $('#navigation').load("nav0.html");
+        });
+    </script>
+    <div class="container">
+        <div class="row display-flex">
+            <div class="col-sm-6 col-xs-12 col-md-4 col-md-offset-2" id="login-intro-form">
+                <h1 class="text-center login-login-title">Hello</h1>
+                <div class="login-account-wall">
+                    <img class="login-profile-img" src="../Images/login/avatar.png" alt="">
+                    <form id="login-form" class="login-form-signin">
+                        <input type="email" id="email" class="form-control" placeholder="Email" required autofocus>
+                        <input type="password" id="password" class="form-control" placeholder="Password" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <label class="checkbox pull-left">
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                        <a href="contact.html" class="pull-right login-need-help">Need help?</a>
+                        <span class="clearfix"></span>
+                    </form>
+                    or <br>
+                    <a href="signup.html" class="text-center login-new-account">Create an account</a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12 col-md-4" id="login-intro">
+                <h2 class="login-login-title text-center">Welcome Travel Guru</h2>
+                <img class="img-responsive img-rounded" src="../Images/login/side.jpg" alt="signup image">
+                <p style="text-align: center; margin-top: 2rem; color: rgb(235, 247, 185);">We are happy to see you here. We are working to provide the best services to you.</p>
+            </div>
+        </div>
+    </div>
+    <div id="foot"></div>
+    <script>
+        $(document).ready(function() {
+            $('#foot').load("footer.html");
+        });
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-IQMg-vVM4APyiKK6_9UPy6YMqFYT1ak",
+            authDomain: "travel-1a39d.firebaseapp.com",
+            databaseURL: "https://travel-1a39d-default-rtdb.firebaseio.com",
+            projectId: "travel-1a39d",
+            storageBucket: "travel-1a39d.appspot.com",
+            messagingSenderId: "979726929683",
+            appId: "1:979726929683:web:9f2061a315d76e533dd4e6",
+            measurementId: "G-XDLDYH35ZY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        document.getElementById("login-form").addEventListener("submit", submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    var user = userCredential.user;
+
+                    // Save user data to Firestore
+                    db.collection("users").doc(user.uid).set({
+                        email: email,
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                    .then(() => {
+                        console.log("User data saved successfully.");
+                        // Redirect to home page
+                        window.location.href = "../HTML/home.html";
+                    })
+                    .catch((error) => {
+                        console.error("Error saving user data: ", error);
+                    });
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        }
+    </script>
+</body>
+
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+        integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link rel="stylesheet" href="../CSS/nav1.css">
+    <link rel="stylesheet" href="../CSS/login.css">
+    <link rel="stylesheet" href="../CSS/footer.css">
+    <title>Login | TravelYaari</title>
+</head>
+
+<body>
+    <div id="navigation"></div>
+    <script>
+        $(document).ready(function () {
+            $('#navigation').load("nav0.html");
+        });
+    </script>
+    <div class="container">
+        <div class="row display-flex">
+            <div class="col-sm-6 col-xs-12 col-md-4 col-md-offset-2" id="login-intro-form">
+                <h1 class="text-center login-login-title">Hello</h1>
+                <div class="login-account-wall">
+                    <form id="login-form" class="login-form-signin">
+                        <input type="email" id="email" class="form-control" placeholder="Email" required autofocus>
+                        <input type="password" id="password" class="form-control" placeholder="Password" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                        <label class="checkbox pull-left">
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                        <a href="contact.html" class="pull-right login-need-help">Need help?</a>
+                        <span class="clearfix"></span>
+                    </form>
+                    or <br>
+                    <a href="signup.html" class="text-center login-new-account">Create an account</a>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xs-12 col-md-4" id="login-intro">
+                <h2 class="login-login-title text-center">Welcome Travel Guru</h2>
+                <p style="text-align: center; margin-top: 2rem; color: #27ae60;">We are happy to see you
+                    here. We are working to provide the best services to you.</p>
+            </div>
+        </div>
+    </div>
+    <div id="foot"></div>
+    <!-- <script>
+        $(document).ready(function () {
+            $('#foot').load("footer.html");
+        }); -->
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-IQMg-vVM4APyiKK6_9UPy6YMqFYT1ak",
+            authDomain: "travel-1a39d.firebaseapp.com",
+            databaseURL: "https://travel-1a39d-default-rtdb.firebaseio.com",
+            projectId: "travel-1a39d",
+            storageBucket: "travel-1a39d.appspot.com",
+            messagingSenderId: "979726929683",
+            appId: "1:979726929683:web:9f2061a315d76e533dd4e6",
+            measurementId: "G-XDLDYH35ZY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        document.getElementById("login-form").addEventListener("submit", submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Signed in
+                    var user = userCredential.user;
+
+                    // Save user data to Firestore
+                    db.collection("users").doc(user.uid).set({
+                        email: email,
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                        .then(() => {
+                            console.log("User data saved successfully.");
+                            // Redirect to home page
+                            window.location.href = "../HTML/home.html";
+                        })
+                        .catch((error) => {
+                            console.error("Error saving user data: ", error);
+                        });
+                })
+                .catch((error) => {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    alert("Error: " + errorMessage);
+                });
+        }
+    </script>
+</body>
+
+</html>

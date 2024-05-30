@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Booking Form</title>
+    <link rel="stylesheet" href="../CSS/book.css">
+    <script src="../JS/book.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Travel and Tour Booking</h1>
+    </header>
+    <div class="container" id="book_form">
+        <h2>Travel Booking Form</h2>
+        <form id="booking-form">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="destination">Destination</label>
+                <input type="text" id="destination" name="destination" required>
+            </div>
+            <div class="form-group">
+                <label for="departureDate">Departure Date</label>
+                <input type="date" id="departureDate" name="departureDate" required>
+            </div>
+            <div class="form-group">
+                <label for="returnDate">Return Date</label>
+                <input type="date" id="returnDate" name="returnDate" required>
+            </div>
+            <div class="form-group">
+                <label for="adults">Number of Adults</label>
+                <select id="adults" name="adults" required>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div id="adultContainer"></div>
+            <div class="form-group">
+                <label for="children">Number of Children</label>
+                <select id="children" name="children">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <div id="childContainer"></div>
+            <div class="form-group">
+                <label for="transportMode">Mode of Transport</label>
+                <select id="transportMode" name="transportMode" required>
+                    <option value="air">Air</option>
+                    <option value="train">Train</option>
+                    <option value="bus">Bus</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="travelClass">Travel Class</label>
+                <select id="travelClass" name="travelClass" required>
+                    <!-- Options will be dynamically populated based on transport mode -->
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="specialRequests">Special Requests</label>
+                <textarea id="specialRequests" name="specialRequests" rows="4"></textarea>
+            </div>
+            <!-- Hidden field for the calculated amount -->
+            <input type="hidden" id="amount" name="amount">
+            <div class="form-group">
+                <input type="submit" value="Book Now">
+            </div>
+        </form>
+        <div class="alert" style="display:none;">Booking successfully saved!</div>
+    </div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB-IQMg-vVM4APyiKK6_9UPy6YMqFYT1ak",
+            authDomain: "travel-1a39d.firebaseapp.com",
+            databaseURL: "https://travel-1a39d-default-rtdb.firebaseio.com",
+            projectId: "travel-1a39d",
+            storageBucket: "travel-1a39d.appspot.com",
+            messagingSenderId: "979726929683",
+            appId: "1:979726929683:web:9f2061a315d76e533dd4e6",
+            measurementId: "G-XDLDYH35ZY"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference your database
+        var contactFormDB = firebase.database().ref("book_form");
+
+        document.getElementById("booking-form").addEventListener("submit", submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+
+            var fullName = getElementVal("fullName");
+            var email = getElementVal("email");
+            var phone = getElementVal("phone");
+            var destination = getElementVal("destination");
+            var departureDate = getElementVal("departureDate");
+            var returnDate = getElementVal("returnDate");
+            var adults = getElementVal("adults");
+            var children = getElementVal("children");
+            var transportMode = getElementVal("transportMode");
+            var travelClass = getElementVal("travelClass");
+            var specialRequests = getElementVal("specialRequests");
+            var amount = calculateAmount(adults, children, departureDate, returnDate, transportMode);
+
+            saveMessages(fullName, email, phone, destination, departureDate, returnDate, adults, children, transportMode, travelClass, specialRequests, amount);
+
+            // Enable alert
+            document.querySelector(".alert").style.display = "block";
+
+            // Remove the alert
+            setTimeout(() => {
+                document.querySelector(".alert").style.display = "none";
+            }, 3000);
+
+            // Display confirmation message
+            displayConfirmationMessage({
+                fullName, email, phone, destination, departureDate, returnDate, adults, children, transportMode, travelClass, specialRequests, amount
+            });
+
+            // Reset the form
+            document.getElementById("booking-form").reset();
+        }
+
+        const saveMessages = (fullName, email, phone, destination, departureDate, returnDate, adults, children, transportMode, travelClass, specialRequests, amount) => {
+            var newContactForm = contactFormDB.push();
+
+            newContactForm.set({
+                fullName: fullName,
+                email: email,
+                phone: phone,
+                destination: destination,
+                departureDate: departureDate,
+                returnDate: returnDate,
+                adults: adults,
+                children: children,
+                transportMode: transportMode,
+                travelClass: travelClass,
+                specialRequests: specialRequests,
+                amount: amount
+            });
+        };
+
+        const getElementVal = (id) => {
+            return document.getElementById(id).value;
+        };
+
+        const calculateAmount = (adults, children, departureDate, returnDate, transportMode) => {
+            const adultPrice = 100;
+            const childPrice = 50;
+            const transportModeMultiplier = {
+                air: 1.5,
+                train: 1.2,
+                bus: 1
+            };
+            const numDays = (new Date(returnDate) - new Date(departureDate)) / (1000 * 60 * 60 * 24) + 1;
+            const totalAmount = (adults * adultPrice + children * childPrice) * numDays * transportModeMultiplier[transportMode];
+            document.getElementById("amount").value = totalAmount.toFixed(2);
+            return totalAmount.toFixed(2);
+        };
+
+        const displayConfirmationMessage = (data) => {
+            const container = document.querySelector('.container');
+            container.innerHTML = `
+                <div class="confirmation-message">
+                    <h2>Booking Confirmation</h2>
+                    <p>Thank you, ${data.fullName}. Your booking has been successfully submitted!</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <p><strong>Phone:</strong> ${data.phone}</p>
+                    <p><strong>Destination:</strong> ${data.destination}</p>
+                    <p><strong>Departure Date:</strong> ${data.departureDate}</p>
+                    <p><strong>Return Date:</strong> ${data.returnDate}</p>
+                    <p><strong>Mode of Transport:</strong> ${data.transportMode}</p>
+                    <p><strong>Travel Class:</strong> ${data.travelClass}</p>
+                    <p><strong>Special Requests:</strong> ${data.specialRequests}</p>
+                    <p><strong>Amount:</strong> $${data.amount}</p>
+                    <button onclick="window.location.reload();">Book Another Trip</button>
+                    <button onclick="downloadConfirmationSlip()">Download Confirmation Slip</button>
+                </div>
+            `;
+        };
+
+        const downloadConfirmationSlip = () => {
+            const {
+                jsPDF
+            } = window.jspdf;
+            const doc = new jsPDF();
+
+            const fullName = getElementVal("fullName");
+            const email = getElementVal("email");
+            const phone = getElementVal("phone");
+            const destination = getElementVal("destination");
+            const departureDate = getElementVal("departureDate");
+            const returnDate = getElementVal("returnDate");
+            const adults = getElementVal("adults");
+            const children = getElementVal("children");
+            const transportMode = getElementVal("transportMode");
+            const travelClass = getElementVal("travelClass");
+            const specialRequests = getElementVal("specialRequests");
+            const amount = getElementVal("amount");
+
+            doc.text(`Booking Confirmation`, 10, 10);
+            doc.text(`Full Name: ${fullName}`, 10, 20);
+            doc.text(`Email: ${email}`, 10, 30);
+            doc.text(`Phone: ${phone}`, 10, 40);
+            doc.text(`Destination: ${destination}`, 10, 50);
+            doc.text(`Departure Date: ${departureDate}`, 10, 60);
+            doc.text(`Return Date: ${returnDate}`, 10, 70);
+            doc.text(`Adults: ${adults}`, 10, 80);
+            doc.text(`Children: ${children}`, 10, 90);
+            doc.text(`Mode of Transport: ${transportMode}`, 10, 100);
+            doc.text(`Travel Class: ${travelClass}`, 10, 110);
+            doc.text(`Special Requests: ${specialRequests}`, 10, 120);
+            doc.text(`Amount: $${amount}`, 10, 130);
+
+            doc.save('booking_confirmation.pdf');
+        };
+
+        document.getElementById('transportMode').addEventListener('change', function () {
+            const travelClass = document.getElementById('travelClass');
+            const mode = this.value;
+            travelClass.innerHTML = '';
+            const travelClassOptions = {
+                air: ['Economy', 'Business', 'First Class'],
+                train: ['Sleeper', 'AC 3 Tier', 'AC 2 Tier', 'First Class'],
+                bus: ['Economy', 'Deluxe', 'Luxury']
+            };
+            travelClassOptions[mode].forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.toLowerCase().replace(' ', '-');
+                optionElement.textContent = option;
+                travelClass.appendChild(optionElement);
+            });
+        });
+
+        document.getElementById('transportMode').dispatchEvent(new Event('change'));
+        // New script to autofill the destination field
+        function getQueryParameter(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const destinationField = document.getElementById('destination');
+            const destination = getQueryParameter('destination');
+            if (destination) {
+                destinationField.value = destination;
+            }
+        }); 
+    </script>
+</body>
+
+</html>
